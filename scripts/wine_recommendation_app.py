@@ -17,19 +17,28 @@ wine_recommend_df = load_data()
 # Define relative path to the images directory from the script's location
 IMAGES_DIR = '../images/'
 
-# Update wine images dictionary with relative paths
+# Function to get image URL based on environment
+def get_image_url(image_filename):
+    if 'streamlit' in os.getcwd():  # Running on Streamlit Cloud
+        # GitHub URL of the images
+        return f'https://raw.githubusercontent.com/shr53/WineRecommendation/main/images/{image_filename}'
+    else:  # Running locally
+        # Local path to images directory
+        return f'{IMAGES_DIR}{image_filename}'
+
+# Update wine images dictionary with image URLs
 wine_images = {
-    'Red wine': f'{IMAGES_DIR}7850104_1.png',
-    'White wine': f'{IMAGES_DIR}7850101_1.png',
-    'Other': f'{IMAGES_DIR}other.png',
-    'Sparkling wine/Champagne': f'{IMAGES_DIR}Sparkling.png',
+    'Red wine': get_image_url('7850104_1.png'),
+    'White wine': get_image_url('7850101_1.png'),
+    'Other': get_image_url('other.png'),
+    'Sparkling wine/Champagne': get_image_url('Sparkling.png'),
     # Add more mappings as needed
 }
 
-# Update sentiment images dictionary with relative paths
+# Update sentiment images dictionary with image URLs
 sentiment_images = {
-    'Positive': f'{IMAGES_DIR}positive_sentiment.png',
-    'Negative': f'{IMAGES_DIR}negative_sentiment.png',
+    'Positive': get_image_url('positive_sentiment.png'),
+    'Negative': get_image_url('negative_sentiment.png'),
 }
 
 # Default image if the wine type is not in the dictionary
