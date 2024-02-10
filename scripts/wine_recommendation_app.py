@@ -5,15 +5,19 @@ import seaborn as sns
 import base64
 import os
 
-# Load preprocessed data
-# Define relative path to the data directory from the script's location
-DATA_DIR = '../data/'
+# Function to load data based on environment (local or Streamlit Cloud)
+def load_data():
+    if 'streamlit' in os.getcwd():  # Running on Streamlit Cloud
+        # GitHub URL of the dataset
+        github_csv_url = "https://raw.githubusercontent.com/shr53/WineRecommendation/main/data/preprocessed_wine_dataset.csv"
+        return pd.read_csv(github_csv_url)
+    else:  # Running locally
+        # Define local file path
+        local_csv_path = 'D:/MPS Analytics/WineRecommendation/data/preprocessed_wine_dataset.csv'
+        return pd.read_csv(local_csv_path)
 
-# Construct the relative path to the CSV file
-csv_file_path = os.path.join(DATA_DIR, 'preprocessed_wine_dataset.csv')
-
 # Load preprocessed data
-wine_recommend_df = pd.read_csv(csv_file_path)
+wine_recommend_df = load_data()
 
 # Define relative path to the images directory from the script's location
 IMAGES_DIR = '../images/'
@@ -201,7 +205,6 @@ def visualize_ratings_by_brand(data):
 def get_image_as_base64(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode('utf-8')
-# Display visualizations
-    visualize_ratings_by_brand(wine_recommend_df)
+    
 if __name__ == '__main__':
     main()
