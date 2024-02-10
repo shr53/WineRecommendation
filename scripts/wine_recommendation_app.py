@@ -14,17 +14,19 @@ def load_data():
 # Load preprocessed data
 wine_recommend_df = load_data()
 
-# Define relative path to the images directory from the script's location
-IMAGES_DIR = '../images/'
-
 # Function to get image URL based on environment
 def get_image_url(image_filename):
+    # Define relative path to the images directory from the script's location
+    IMAGES_DIR = '../images/'
     if 'streamlit' in os.getcwd():  # Running on Streamlit Cloud
         # GitHub URL of the images
         return f'https://raw.githubusercontent.com/shr53/WineRecommendation/main/images/{image_filename}'
     else:  # Running locally
-        # Local path to images directory
-        return f'{IMAGES_DIR}{image_filename}'
+          # Local path to images directory
+        script_dir = os.path.dirname(__file__)
+        project_root = os.path.abspath(os.path.join(script_dir, os.pardir))
+        images_dir = os.path.join(project_root, 'images')
+        return os.path.join(images_dir, image_filename)
 
 # Update wine images dictionary with image URLs
 wine_images = {
