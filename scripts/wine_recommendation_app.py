@@ -5,16 +5,11 @@ import seaborn as sns
 import base64
 import os
 
-# Function to load data based on environment (local or Streamlit Cloud)
+# Function to load data from GitHub URL
 def load_data():
-    if 'streamlit' in os.getcwd():  # Running on Streamlit Cloud
-        # GitHub URL of the dataset
-        github_csv_url = "https://raw.githubusercontent.com/shr53/WineRecommendation/main/data/preprocessed_wine_dataset.csv"
-        return pd.read_csv(github_csv_url)
-    else:  # Running locally
-        # Define local file path
-        local_csv_path = 'D:/MPS Analytics/WineRecommendation/data/preprocessed_wine_dataset.csv'
-        return pd.read_csv(local_csv_path)
+    # GitHub URL of the dataset
+    github_csv_url = "https://raw.githubusercontent.com/shr53/WineRecommendation/main/data/preprocessed_wine_dataset.csv"
+    return pd.read_csv(github_csv_url)
 
 # Load preprocessed data
 wine_recommend_df = load_data()
