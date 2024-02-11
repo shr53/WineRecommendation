@@ -22,7 +22,7 @@ def get_image_url(image_filename):
         # GitHub URL of the images
         return f'https://raw.githubusercontent.com/shr53/WineRecommendation/main/images/{image_filename}'
     else:  # Running locally
-          # Local path to images directory
+        # Local path to images directory
         script_dir = os.path.dirname(__file__)
         project_root = os.path.abspath(os.path.join(script_dir, os.pardir))
         images_dir = os.path.join(project_root, 'images')
@@ -112,13 +112,35 @@ def main():
     st.write("Welcome to PourPerfection, your destination for discovering the most popular wines based on brand, user ratings, and type. Select your preferred brand, wine type, and minimum rating to receive expert recommendations tailored to your taste.")
 
     # Define sidebar options
-    st.sidebar.title("🍇 User Wine Preferences")
-    brand = st.sidebar.selectbox('🏷️ Select Brand', wine_recommend_df['brand'].unique())
-    wine_type = st.sidebar.selectbox('🍷 Select Wine Type', wine_recommend_df['wine_type'].unique())
-    min_rating = st.sidebar.slider('⭐ Minimum Rating', min_value=1, max_value=5, value=3)
+    st.sidebar.title("🍾 User Wine Preferences")
+    # Get unique brands
+    unique_brands = ['Select Brand'] + list(wine_recommend_df['brand'].unique())
+    # Dropdown with default placeholder
+    brand = st.sidebar.selectbox('🏷️ Select Brand', unique_brands)
 
-    recommendations = recommend_wines(brand, wine_type, min_rating)
-    display_recommendations(recommendations)
+    # Ensure that the default placeholder isn't selectable
+    if brand == 'Select Brand':
+        brand = None
+    
+    # Get unique wine types
+    unique_wine_types = ['Select Wine Type'] + list(wine_recommend_df['wine_type'].unique())
+    # Dropdown with default placeholder
+    wine_type = st.sidebar.selectbox('🍷 Select Wine Type', unique_wine_types)
+
+    # Ensure that the default placeholder isn't selectable
+    if wine_type == 'Select Wine Type':
+        wine_type = None
+    
+    min_rating = st.sidebar.slider('⭐ Minimum Rating', min_value=1, max_value=5, value=1)
+    
+    if brand is None or wine_type is None or min_rating == 1:
+        st.markdown(
+            "<h3 style='text-align: center;'>Please select your preferences to start your search in the right panel.</h3>",
+            unsafe_allow_html=True
+        )
+    else:
+        recommendations = recommend_wines(brand, wine_type, min_rating)
+        display_recommendations(recommendations)
 
 # Function to display a bar chart of top recommended wines
 def display_recommendations(recommendations):
